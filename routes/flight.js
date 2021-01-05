@@ -87,11 +87,7 @@ router
         .then((val) => {
           if (val && val.length && val.length > 0) {
             has_data = true;
-          } else {
-            has_data = false;
-          }
-
-          res.render("flight", {
+              res.render("flight", {
             title: "Flights",
             admin: false,
             has_data: has_data,
@@ -105,6 +101,23 @@ router
             role: role,
             logged_in: logged_in,
           });
+          } else {
+            has_data = false;
+            req.flash("error_msg", "No flights found");
+            res.render("flight", {
+              title: "Flights",
+              admin: false,
+              has_data: has_data,
+              data: "",
+              sum: "",
+              location: "",
+              user_id: user_id,
+              name: name,
+              thumbnail: thumbnail,
+              role: role,
+              logged_in: logged_in,
+            });
+          }        
         })
         .catch((err) => console.log(err));
     } else {

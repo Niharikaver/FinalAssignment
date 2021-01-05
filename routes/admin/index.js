@@ -725,6 +725,9 @@ router
       price: price,
       addedOn: addedOn,
     };
+
+    console.log(req.body);
+    console.log(data);
     FlightModal.findOneAndUpdate({ _id: id }, data)
       .then((result) => {
         req.flash("success_msg", "flight Updated");
