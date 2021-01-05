@@ -1,0 +1,207 @@
+<!-- search form -->
+
+<section class="head-hotel">
+    <%- include('partials/search-form'); %>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row my-3">
+            <!-- filter section -->
+            <div class="col-lg-3 mx-auto">
+                <div class="row">
+                    <form class="w-100" method="GET" action="/flight/search">
+                        <div class="col-lg-12 border-bottom py-2 px-0">
+                            <b>Search for flights</b>
+                        </div>
+                        <%- include('./partials/messages'); %>
+
+                            <!-- location -->
+                            <div class="col-lg-12 border-bottom py-2 px-0">
+                                <small class="default-color"><b>Flight route</b></small>
+                                <br />
+                                <input type="text" class="w-100 p-2 bg-light my-2 filterLocation"
+                                    placeholder="Flight from" name="departure"
+                                    style="border-radius: 0; border: solid 1px grey;" />
+                                <input type="text" class="w-100 p-2 bg-light my-2 filterLocation" placeholder="To"
+                                    name="arrival" style="border-radius: 0; border: solid 1px grey;" />
+                            </div>
+
+                            <!-- range -->
+                            <div class="col-lg-12 border-bottom py-2 px-0">
+                                <small class="default-color float-left"><b>Price max.</b></small>
+                                <small class="default-color float-right" id="price"></small>
+                                <input type="range" min="1" max="1000" class="form-range w-100 p-2 my-2" name="price"
+                                    id="customRange" />
+                            </div>
+
+                            <!-- rating -->
+                            <!-- <div class="col-lg-12 border-bottom py-2 px-0">
+                            <small class="default-color"><b>Star Rating min.</b></small> <br />
+                            <div class="form-check py-1">
+                                <input class="form-check-input" type="radio" name="star" id="star1" value="1" />
+                                <label class="form-check-label" for="star1">
+                                    <i class="fas fa-star"></i>
+                                </label>
+                            </div>
+                            <div class="form-check py-1">
+                                <input class="form-check-input" type="radio" name="star" id="star2" value="2" />
+                                <label class="form-check-label" for="star2">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </label>
+                            </div>
+                            <div class="form-check py-1">
+                                <input class="form-check-input" type="radio" name="star" id="star3" value="3" checked />
+                                <label class="form-check-label" for="star3">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </label>
+                            </div>
+                            <div class="form-check py-1">
+                                <input class="form-check-input" type="radio" name="star" id="star4" value="4" />
+                                <label class="form-check-label" for="star4">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i>
+                                </label>
+                            </div>
+                            <div class="form-check py-1">
+                                <input class="form-check-input" type="radio" name="star" id="star5" value="5" />
+                                <label class="form-check-label" for="star5">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                        class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </label>
+                            </div>
+                        </div> -->
+
+                            <!-- Button -->
+                            <div class="col-lg-12 py-2 px-0">
+                                <button class="w-100 p-2 default-bg-color" style="border-radius: 0;">
+                                    Search
+                                </button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- view result section -->
+            <% if(has_data){ %>
+                <div class="col-lg-9 mx-auto">
+                    <div class="row pl-4">
+                        <% if(departure && arrival){ %>
+                            <div class="col-lg-12 pb-2">
+                                <p class="m-0">Flight from <b class="default-color">
+                                        <%= departure %>
+                                    </b> to <b class="default-color">
+                                        <%= arrival %>
+                                    </b>
+                                </p>
+                                <small>
+                                    <b class="default-color">
+                                        <%= sum %>
+                                    </b> flights available
+                                </small>
+                            </div>
+                            <% } %>
+
+                                <% data.forEach(function(val){ %>
+                                    <div class="col-lg-12 my-2 bg-light overflow-hidden rounded shadow">
+
+                                        <div class="row">
+                                            <div
+                                                class="col-lg-3  overflow-hidden d-flex justify-content-center align-items-center border-right">
+                                                <div class="mx-auto p-3">
+
+                                                    <% if(val.airline.image){ %>
+                                                        <img src="/assets/image/uploads/o_<%= val.airline.image %>"
+                                                            width="100px" alt="Airlines" />
+                                                        <% } %>
+                                                            <% if(!val.airline.image){ %>
+                                                                <img src="/assets/image/plane.png" width="100px"
+                                                                    alt="Airlines" />
+                                                                <% } %>
+
+                                                                    <p class="mt-2 text-center">
+                                                                        <%= val.airline.name%>
+                                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <p class="p-2"><i class="fas fa-plane-departure default-color"></i><b>
+                                                        <%= val.departure %>
+                                                    </b></p>
+                                                <p>
+                                                    <%= val.departure_date %>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 border-right">
+                                                <p class="p-2"> <i class="fas fa-plane-arrival default-color"></i><b>
+                                                        <%= val.arrival %>
+                                                    </b></p>
+                                                <p>
+                                                    <%= val.arrival_date %>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3 justify-content-center align-items-center d-flex">
+                                                <div class="text-center">
+                                                    <h5 class="default-color"><b>$ <%= val.price %></b></h5>
+                                                    <p class="py-1"><small>Price per seat</small></p>
+                                                    <form method="POST" action="/flight/reserve">
+                                                        <input type="text" name="flight" value="<%= val._id %>"
+                                                            hidden />
+                                                        <button style="border-radius: 0;" class="p-2 default-bg-color">
+                                                            Book Flight
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <% }); %>
+
+                                        <!-- If no data -->
+                                        <% if(!data){ %>
+                                            <div class="mx-auto p-5">No flights found. Please search other
+                                                destinations.
+                                            </div>
+                                            <% } %>
+                    </div>
+                </div>
+                <% } %>
+        </div>
+    </div>
+</section>
+
+<script>
+    $("#nav-flight").addClass("active");
+
+    var slider = document.getElementById("customRange");
+    var output = document.getElementById("price");
+    output.innerHTML = "$" + slider.value;
+    slider.oninput = function () {
+        output.innerHTML = "$" + this.value;
+    };
+
+    $(function () {
+        $('.filterLocation').autocomplete({
+            source: function (req, res) {
+                $.ajax({
+                    url: '/location/filter',
+                    dataType: 'jsonp',
+                    type: 'GET',
+                    data: req,
+                    success: function (data) {
+                        res(data);
+                    },
+                    error: function (err) {
+                        console.log(err.status);
+                    }
+                });
+            }, minlength: 1, select: function (event, ui) {
+                if (ui.data) {
+                    $('#filterLocation').text(ui.data.label);
+                }
+            }
+        })
+    })
+</script>

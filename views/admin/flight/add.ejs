@@ -1,0 +1,95 @@
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <%= heading %>
+        </h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <div class="col-lg-8 mb-4 mx-auto">
+            <%- include('../../partials/messages'); %>
+
+                <form method="POST" action="/admin/flight/add">
+                    <div class="form-group">
+                        <label for="airline">Airline</label>
+                        <select class="form-control" id="airline" name="airline">
+
+
+                            <% var counter=1; airline.forEach(function(a){ %>
+                                <option value="<%= a._id %>" selected="<% if(counter==1){a.name} %>">
+                                    <%= a.name %>
+                                </option>
+                                <% }); %>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="departure">departure</label>
+                        <input type="text" class="form-control" name="departure" id="departure">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrival">arrival</label>
+                        <input type="text" class="form-control" name="arrival" id="arrival">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departure_date">departure date</label>
+                        <input type="date" class="form-control" name="departure_date" id="departure_date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrival_date">arrival date</label>
+                        <input type="date" class="form-control" name="arrival_date" id="arrival_date">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="seats">Total passanger seats</label>
+                        <input type="number" class="form-control" name="seats">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price per seat</label>
+                        <input type="number" class="form-control" name="price">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+<script>
+    $("#nav-flight").addClass("active");
+
+    $(function () {
+        $('#location').autocomplete({
+            source: function (req, res) {
+                $.ajax({
+                    url: '/location/filter',
+                    dataType: 'jsonp',
+                    type: 'GET',
+                    data: req,
+                    success: function (data) {
+                        res(data);
+                    },
+                    error: function (err) {
+                        console.log(err.status);
+                    }
+                });
+            }, minlength: 1, select: function (event, ui) {
+                if (ui.data) {
+                    $('#searchbox').text(ui.data.label);
+                }
+            }
+        })
+    })
+
+</script>
